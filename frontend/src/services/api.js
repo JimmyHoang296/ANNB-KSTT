@@ -28,3 +28,7 @@ export function getData() {
 export function updateData(data) {
   return callAPI({ action: 'updateData', data });
 }
+
+export function addData(data) {
+  return callAPI({ action: 'addData', data });
+}

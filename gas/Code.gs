@@ -37,6 +37,8 @@ function dispatch(body) {
       return handleGetData();
     case 'updateData':
       return handleUpdateData(body.data);
+    case 'addData':
+      return handleAddData(body.data);
     default:
       return { success: false, message: 'Hành động không hợp lệ: ' + action };
   }
@@ -111,4 +113,34 @@ function handleUpdateData(data) {
     }
   }
   return { success: false, message: 'Không tìm thấy sự vụ với ID: ' + targetId };
+}
+
+function handleAddData(data) {
+  if (!data) return { success: false, message: 'Không có dữ liệu' };
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_DATA);
+  var values = sheet.getDataRange().getValues();
+  if (values.length === 0) return { success: false, message: 'Sheet data trống' };
+
+  var headers = values[0].map(function(h) { return String(h).trim(); });
+
+  // Tự động tăng ID
+  var maxId = 0;
+  var idColIndex = headers.indexOf('id');
+  if (idColIndex !== -1) {
+    for (var i = 1; i < values.length; i++) {
+      var val = parseInt(values[i][idColIndex], 10);
+      if (!isNaN(val) && val > maxId) maxId = val;
+    }
+  }
+  var newId = maxId + 1;
+  data['id'] = String(newId);
+
+  // Tạo dòng mới theo đúng thứ tự headers
+  var newRow = headers.map(function(h) {
+    return data.hasOwnProperty(h) ? data[h] : '';
+  });
+
+  sheet.appendRow(newRow);
+  return { success: true, message: 'Thêm sự vụ thành công', id: newId };
 }

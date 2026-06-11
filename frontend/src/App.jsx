@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import DataListPage from './pages/DataListPage';
 import DetailPage from './pages/DetailPage';
+import AddPage from './pages/AddPage';
 
 export default function App() {
   return (
@@ -16,6 +17,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DataListPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add"
+            element={
+              <ProtectedRoute>
+                <AddPage />
               </ProtectedRoute>
             }
           />

@@ -47,6 +47,24 @@
   background: #f0f4f8;
 }
 
+.addBtn {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  background: #1a3c6e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s;
+}
+
+.addBtn:hover {
+  background: #14306a;
+}
+
 .count {
   font-size: 0.85rem;
   color: #666;

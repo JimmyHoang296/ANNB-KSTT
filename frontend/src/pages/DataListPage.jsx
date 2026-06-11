@@ -90,6 +90,7 @@ export default function DataListPage() {
         </button>
       </div>
 
+      <button className={styles.addBtn} onClick={() => navigate('/add')}>+ Thêm sự vụ</button>
       <div className={styles.count}>{filtered.length} sự vụ</div>
 
       <div className={styles.tableWrapper}>
