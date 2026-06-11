@@ -1,0 +1,148 @@
+.container {
+  padding: 1.5rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.search:focus {
+  outline: none;
+  border-color: #1a3c6e;
+}
+
+.select {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sortBtn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #1a3c6e;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a3c6e;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sortBtn:hover {
+  background: #f0f4f8;
+}
+
+.count {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background: #fff;
+}
+
+.table th {
+  background: #1a3c6e;
+  color: #fff;
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.row:hover {
+  background: #f0f4f8;
+}
+
+.summary {
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background: #e0e0e0;
+  color: #333;
+}
+
+.badge_Hoàn_thành, .badge_Hoàn_thành {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge_Đang_xử_lý {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.badge_Chờ_xử_lý {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge_Tạm_dừng {
+  background: #fce4ec;
+  color: #c62828;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-size: 1rem;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+}

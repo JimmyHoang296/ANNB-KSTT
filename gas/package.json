@@ -1,0 +1,9 @@
+{
+  "name": "kstt-annb-gas",
+  "scripts": {
+    "push": "clasp --user xcellland push --force",
+    "pull": "clasp --user xcellland pull",
+    "deploy": "clasp --user xcellland deploy",
+    "open": "clasp --user xcellland open-script"
+  }
+}
