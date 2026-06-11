@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getData, updateData } from '../services/api';
+import { formatDate } from '../utils/formatDate';
 import styles from './DetailPage.module.css';
 
 const READ_ONLY_FIELDS = [
@@ -108,7 +109,7 @@ export default function DetailPage() {
           {READ_ONLY_FIELDS.map((field) => (
             <div key={field} className={FULL_WIDTH_FIELDS.has(field) ? styles.fullWidth : ''}>
               <div className={styles.fieldLabel}>{field}</div>
-              <div className={styles.fieldValue}>{original?.[field] || '—'}</div>
+              <div className={styles.fieldValue}>{formatDate(original?.[field]) || '—'}</div>
             </div>
           ))}
         </div>

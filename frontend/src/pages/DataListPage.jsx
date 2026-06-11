@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getData } from '../services/api';
+import { formatDate } from '../utils/formatDate';
 import styles from './DataListPage.module.css';
 
 const SORT_FIELD = 'Ngày phân công /tiếp nhận';
@@ -131,8 +132,8 @@ export default function DataListPage() {
                     </span>
                   </td>
                   <td>{row['KSTT']}</td>
-                  <td>{row['Ngày phân công /tiếp nhận']}</td>
-                  <td>{row['Deadline thực hiện']}</td>
+                  <td>{formatDate(row['Ngày phân công /tiếp nhận'])}</td>
+                  <td>{formatDate(row['Deadline thực hiện'])}</td>
                 </tr>
               ))
             )}

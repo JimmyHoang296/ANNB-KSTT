@@ -78,7 +78,16 @@ function handleGetData() {
       if (val instanceof Date) {
         obj[headers[j]] = Utilities.formatDate(val, Session.getScriptTimeZone(), 'dd/MM/yyyy');
       } else {
-        obj[headers[j]] = val !== undefined && val !== null ? String(val) : '';
+        var strVal = val !== undefined && val !== null ? String(val) : '';
+        // Chuẩn hóa string date dạng "Mon Jun 08 2026 00:00:00 GMT+0700..." → dd/MM/yyyy
+        if (strVal && /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s/.test(strVal)) {
+          var parsed = new Date(strVal);
+          obj[headers[j]] = isNaN(parsed.getTime())
+            ? strVal
+            : Utilities.formatDate(parsed, Session.getScriptTimeZone(), 'dd/MM/yyyy');
+        } else {
+          obj[headers[j]] = strVal;
+        }
       }
     }
     rows.push(obj);
