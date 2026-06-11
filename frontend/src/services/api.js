@@ -1,5 +1,5 @@
 // Điền URL Google Apps Script Web App sau khi deploy
-const SCRIPT_URL = import.meta.env.VITE_SCRIPT_URL || '';
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwESovUQr0oxZ0VfmILqMiM8WiukwAPVU7ZZbIVpLlvl3GhmU2c3IjfRoNCI_er1DSv/exec";
 
 async function callAPI(body) {
   if (!SCRIPT_URL) {

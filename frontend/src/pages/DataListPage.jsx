@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getData } from '../services/api';
+import { useData } from '../contexts/DataContext';
 import { formatDate } from '../utils/formatDate';
 import styles from './DataListPage.module.css';
 
@@ -17,31 +17,24 @@ function parseDate(str) {
 }
 
 export default function DataListPage() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data, loading, error, refresh } = useData();
   const [keyword, setKeyword] = useState('');
   const [statusFilter, setStatusFilter] = useState('Tất cả');
   const [sortDir, setSortDir] = useState('desc');
   const navigate = useNavigate();
 
+  // Chỉ fetch khi chưa có data (lần đầu vào hoặc sau khi logout)
   useEffect(() => {
-    getData()
-      .then((res) => {
-        if (res.success) setData(res.data || []);
-        else setError(res.message || 'Không thể tải dữ liệu');
-      })
-      .catch((err) => setError('Lỗi kết nối: ' + err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    if (data === null) refresh();
+  }, [data, refresh]);
 
   const statuses = useMemo(() => {
-    const unique = [...new Set(data.map((r) => r[STATUS_FIELD]).filter(Boolean))];
+    const unique = [...new Set((data || []).map((r) => r[STATUS_FIELD]).filter(Boolean))];
     return ['Tất cả', ...unique];
   }, [data]);
 
   const filtered = useMemo(() => {
-    let rows = data;
+    let rows = data || [];
     if (statusFilter !== 'Tất cả') {
       rows = rows.filter((r) => r[STATUS_FIELD] === statusFilter);
     }
@@ -89,6 +82,9 @@ export default function DataListPage() {
         <button className={styles.sortBtn} onClick={toggleSort}>
           Ngày phân công {sortDir === 'asc' ? '▲' : '▼'}
         </button>
+        <button className={styles.refreshBtn} onClick={refresh} disabled={loading}>
+          {loading ? '...' : '↻ Làm mới'}
+        </button>
       </div>
 
       <button className={styles.addBtn} onClick={() => navigate('/add')}>+ Thêm sự vụ</button>
@@ -99,14 +95,14 @@ export default function DataListPage() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Site</th>
               <th>Tên Cửa hàng</th>
               <th>Người vi phạm</th>
-              <th>Phân loại hành vi</th>
-              <th>Tình trạng</th>
+              <th>Chức danh</th>
               <th>KSTT</th>
-              <th>Ngày phân công</th>
-              <th>Deadline</th>
+              <th>ANNB</th>
+              <th>Tóm tắt nội dung</th>
+              <th>Cập nhật chi tiết</th>
+              <th>Tình trạng</th>
             </tr>
           </thead>
           <tbody>
@@ -122,18 +118,18 @@ export default function DataListPage() {
                   onClick={() => navigate(`/detail/${row['id']}`)}
                 >
                   <td>{row['id']}</td>
-                  <td>{row['Site']}</td>
                   <td>{row['Tên Cửa hàng']}</td>
                   <td>{row['Người vi phạm']}</td>
-                  <td className={styles.summary}>{row['Phân loại hành vi']}</td>
+                  <td>{row['Chức vụ/Chức danh']}</td>
+                  <td>{row['KSTT']}</td>
+                  <td>{row['ANNB']}</td>
+                  <td className={styles.summary}>{row['Tóm tắt nội dung']}</td>
+                  <td className={styles.summary}>{row['Cập nhật chi tiết']}</td>
                   <td>
                     <span className={`${styles.badge} ${styles['badge_' + (row[STATUS_FIELD] || '').replace(/[\s/()…]+/g, '_')]}`}>
                       {row[STATUS_FIELD]}
                     </span>
                   </td>
-                  <td>{row['KSTT']}</td>
-                  <td>{formatDate(row['Ngày phân công /tiếp nhận'])}</td>
-                  <td>{formatDate(row['Deadline thực hiện'])}</td>
                 </tr>
               ))
             )}

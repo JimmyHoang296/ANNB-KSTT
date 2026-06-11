@@ -1,12 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useData } from '../contexts/DataContext';
 import styles from './Layout.module.css';
 
 export default function Layout({ children }) {
   const { user, signOut } = useAuth();
+  const { clearData } = useData();
   const navigate = useNavigate();
 
   function handleLogout() {
+    clearData();
     signOut();
     navigate('/login', { replace: true });
   }

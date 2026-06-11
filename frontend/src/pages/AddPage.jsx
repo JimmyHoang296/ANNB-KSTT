@@ -30,6 +30,7 @@ const INITIAL_FORM = {
 };
 
 const STATUS_OPTIONS = ['Đang thực hiện', 'Đã hoàn thành', 'Chưa thực hiện', 'Tạm dừng'];
+const NGUON_OPTIONS = ['ANCS', 'KSTT', 'VH', 'Tố cáo', 'Khác'];
 
 const TEXTAREA_FIELDS = new Set(['Tóm tắt nội dung', 'Phương án xử lý', 'Quyết định của Bản án', 'Cập nhật chi tiết']);
 const FULL_WIDTH_FIELDS = new Set(['Tóm tắt nội dung', 'Phương án xử lý', 'Quyết định của Bản án', 'Cập nhật chi tiết']);
@@ -105,7 +106,16 @@ export default function AddPage() {
     return (
       <div key={field} className={isFullWidth ? styles.fullWidth : ''}>
         <label className={styles.fieldLabel}>{field}</label>
-        {field === 'Tình trạng thực hiện' ? (
+        {field === 'Nguồn tiếp nhận' ? (
+          <select
+            className={styles.input}
+            value={form[field]}
+            onChange={(e) => handleChange(field, e.target.value)}
+          >
+            <option value="">-- Chọn nguồn --</option>
+            {NGUON_OPTIONS.map((s) => <option key={s}>{s}</option>)}
+          </select>
+        ) : field === 'Tình trạng thực hiện' ? (
           <select
             className={styles.input}
             value={form[field]}

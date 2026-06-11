@@ -47,6 +47,27 @@
   background: #f0f4f8;
 }
 
+.refreshBtn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background: #fff;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  background: #f0f4f8;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .addBtn {
   display: inline-block;
   padding: 0.5rem 1.1rem;
