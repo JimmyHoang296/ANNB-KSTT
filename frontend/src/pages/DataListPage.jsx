@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getData } from '../services/api';
 import styles from './DataListPage.module.css';
 
-const STATUS_OPTIONS = ['Tất cả', 'Đang xử lý', 'Hoàn thành', 'Chờ xử lý', 'Tạm dừng'];
+const SORT_FIELD = 'Ngày phân công /tiếp nhận';
+const STATUS_FIELD = 'Tình trạng thực hiện';
 
 function parseDate(str) {
   if (!str) return null;
@@ -26,25 +27,22 @@ export default function DataListPage() {
   useEffect(() => {
     getData()
       .then((res) => {
-        if (res.success) {
-          setData(res.data || []);
-        } else {
-          setError(res.message || 'Không thể tải dữ liệu');
-        }
+        if (res.success) setData(res.data || []);
+        else setError(res.message || 'Không thể tải dữ liệu');
       })
       .catch((err) => setError('Lỗi kết nối: ' + err.message))
       .finally(() => setLoading(false));
   }, []);
 
   const statuses = useMemo(() => {
-    const unique = [...new Set(data.map((r) => r['trạng thái']).filter(Boolean))];
+    const unique = [...new Set(data.map((r) => r[STATUS_FIELD]).filter(Boolean))];
     return ['Tất cả', ...unique];
   }, [data]);
 
   const filtered = useMemo(() => {
     let rows = data;
     if (statusFilter !== 'Tất cả') {
-      rows = rows.filter((r) => r['trạng thái'] === statusFilter);
+      rows = rows.filter((r) => r[STATUS_FIELD] === statusFilter);
     }
     if (keyword.trim()) {
       const kw = keyword.trim().toLowerCase();
@@ -53,8 +51,8 @@ export default function DataListPage() {
       );
     }
     rows = [...rows].sort((a, b) => {
-      const da = parseDate(a['ngày bắt đầu']);
-      const db = parseDate(b['ngày bắt đầu']);
+      const da = parseDate(a[SORT_FIELD]);
+      const db = parseDate(b[SORT_FIELD]);
       if (!da && !db) return 0;
       if (!da) return 1;
       if (!db) return -1;
@@ -68,7 +66,7 @@ export default function DataListPage() {
   }
 
   if (loading) return <div className={styles.center}>Đang tải dữ liệu...</div>;
-  if (error) return <div className={styles.center + ' ' + styles.error}>{error}</div>;
+  if (error) return <div className={`${styles.center} ${styles.error}`}>{error}</div>;
 
   return (
     <div className={styles.container}>
@@ -85,12 +83,10 @@ export default function DataListPage() {
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
-          {statuses.map((s) => (
-            <option key={s}>{s}</option>
-          ))}
+          {statuses.map((s) => <option key={s}>{s}</option>)}
         </select>
         <button className={styles.sortBtn} onClick={toggleSort}>
-          Ngày bắt đầu {sortDir === 'asc' ? '▲' : '▼'}
+          Ngày phân công {sortDir === 'asc' ? '▲' : '▼'}
         </button>
       </div>
 
@@ -101,19 +97,20 @@ export default function DataListPage() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Mã CH</th>
-              <th>Tên CH</th>
-              <th>Tóm tắt vấn đề</th>
-              <th>Trạng thái</th>
-              <th>KSTT phụ trách</th>
-              <th>Ngày bắt đầu</th>
-              <th>Ngày hoàn thành</th>
+              <th>Site</th>
+              <th>Tên Cửa hàng</th>
+              <th>Người vi phạm</th>
+              <th>Phân loại hành vi</th>
+              <th>Tình trạng</th>
+              <th>KSTT</th>
+              <th>Ngày phân công</th>
+              <th>Deadline</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={8} className={styles.empty}>Không có dữ liệu</td>
+                <td colSpan={9} className={styles.empty}>Không có dữ liệu</td>
               </tr>
             ) : (
               filtered.map((row) => (
@@ -123,17 +120,18 @@ export default function DataListPage() {
                   onClick={() => navigate(`/detail/${row['id']}`)}
                 >
                   <td>{row['id']}</td>
-                  <td>{row['mã CH']}</td>
-                  <td>{row['tên CH']}</td>
-                  <td className={styles.summary}>{row['tóm tắt vấn đề']}</td>
+                  <td>{row['Site']}</td>
+                  <td>{row['Tên Cửa hàng']}</td>
+                  <td>{row['Người vi phạm']}</td>
+                  <td className={styles.summary}>{row['Phân loại hành vi']}</td>
                   <td>
-                    <span className={`${styles.badge} ${styles['badge_' + (row['trạng thái'] || '').replace(/\s+/g, '_')]}`}>
-                      {row['trạng thái']}
+                    <span className={`${styles.badge} ${styles['badge_' + (row[STATUS_FIELD] || '').replace(/[\s/()…]+/g, '_')]}`}>
+                      {row[STATUS_FIELD]}
                     </span>
                   </td>
-                  <td>{row['kstt phụ trách']}</td>
-                  <td>{row['ngày bắt đầu']}</td>
-                  <td>{row['ngày hoàn thành']}</td>
+                  <td>{row['KSTT']}</td>
+                  <td>{row['Ngày phân công /tiếp nhận']}</td>
+                  <td>{row['Deadline thực hiện']}</td>
                 </tr>
               ))
             )}

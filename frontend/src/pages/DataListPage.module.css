@@ -78,7 +78,7 @@
 .table td {
   padding: 0.6rem 0.85rem;
   border-bottom: 1px solid #eee;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .row {
@@ -91,7 +91,7 @@
 }
 
 .summary {
-  max-width: 280px;
+  max-width: 220px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -114,7 +114,7 @@
   color: #333;
 }
 
-.badge_Hoàn_thành, .badge_Hoàn_thành {
+.badge_Hoàn_thành {
   background: #e8f5e9;
   color: #2e7d32;
 }
@@ -132,6 +132,21 @@
 .badge_Tạm_dừng {
   background: #fce4ec;
   color: #c62828;
+}
+
+.badge_Đã_hoàn_thành {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge_Đang_thực_hiện {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.badge_Chưa_thực_hiện {
+  background: #e3f2fd;
+  color: #1565c0;
 }
 
 .center {
